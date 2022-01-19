@@ -134,7 +134,6 @@ class PuppeteerRenderer {
       if (!page.isClosed()) {
         await page.close()
       }
-      console.log('PASS:', route)
       return result
     } catch (e) {
       if (!page.isClosed()) {
