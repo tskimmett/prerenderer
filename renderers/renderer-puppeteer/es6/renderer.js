@@ -18,7 +18,8 @@ const waitForRender = function (options) {
     if (!options.renderAfterDocumentEvent && !options.renderAfterTime) {  
       resolve('No options specified')
     }
-  }).then(reasonCode => console.log('Render reason code: ' + reasonCode));
+  })
+  .then(reasonCode => console.log('Render reason code:', reasonCode, 'Route:', document.location.pathname));
 }
 
 class PuppeteerRenderer {
