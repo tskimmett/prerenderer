@@ -7,18 +7,18 @@ const waitForRender = function (options) {
   return new Promise((resolve, reject) => {
     // Render when an event fires on the document.
     if (options.renderAfterDocumentEvent) {
-      if (window['__PRERENDER_STATUS'] && window['__PRERENDER_STATUS'].__DOCUMENT_EVENT_RESOLVED) resolve()
-      document.addEventListener(options.renderAfterDocumentEvent, () => resolve())
+      if (window['__PRERENDER_STATUS'] && window['__PRERENDER_STATUS'].__DOCUMENT_EVENT_RESOLVED) resolve('Document Event Resolved')
+      document.addEventListener(options.renderAfterDocumentEvent, () => resolve('Render After document event'))
     }
 
     if (options.renderAfterTime) {
-      setTimeout(() => resolve(), options.renderAfterTime)
+      setTimeout(() => resolve('Timeout'), options.renderAfterTime)
     }
 
-    if (!options.renderAfterDocumentEvent && !options.renderAfterTime) {
-      resolve()
+    if (!options.renderAfterDocumentEvent && !options.renderAfterTime) {  
+      resolve('Resolving because no options specified')
     }
-  })
+  }).then(reasonCode => console.log('Render Reason code: ' + reasonCode));
 }
 
 class PuppeteerRenderer {
@@ -129,6 +129,10 @@ class PuppeteerRenderer {
         originalRoute: route,
         route: await page.evaluate('window.location.pathname'),
         html: await page.content()
+      };
+
+      if (!result.html.includes('data-server-rendered="true"')) {
+        throw "Page wasn't rendered properly, was missing data-server-rendered attribute";
       }
 
       if (!page.isClosed()) {
