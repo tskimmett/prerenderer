@@ -7,8 +7,8 @@ const waitForRender = function (options) {
   return new Promise((resolve, reject) => {
     // Render when an event fires on the document.
     if (options.renderAfterDocumentEvent) {
-      if (window['__PRERENDER_STATUS'] && window['__PRERENDER_STATUS'].__DOCUMENT_EVENT_RESOLVED) resolve('Document Event Resolved')
-      document.addEventListener(options.renderAfterDocumentEvent, () => resolve('Render After document event'))
+      if (window['__PRERENDER_STATUS'] && window['__PRERENDER_STATUS'].__DOCUMENT_EVENT_RESOLVED) resolve('Render Event Already Resolved')
+      document.addEventListener(options.renderAfterDocumentEvent, () => resolve('Render Event Fired'))
     }
 
     if (options.renderAfterTime) {
@@ -16,9 +16,9 @@ const waitForRender = function (options) {
     }
 
     if (!options.renderAfterDocumentEvent && !options.renderAfterTime) {  
-      resolve('Resolving because no options specified')
+      resolve('No options specified')
     }
-  }).then(reasonCode => console.log('Render Reason code: ' + reasonCode));
+  }).then(reasonCode => console.log('Render reason code: ' + reasonCode));
 }
 
 class PuppeteerRenderer {
