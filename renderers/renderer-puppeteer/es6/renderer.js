@@ -19,7 +19,9 @@ const waitForRender = function (options) {
       resolve('No options specified')
     }
   })
-  .then(reasonCode => console.log('Render reason code:', reasonCode, 'Route:', document.location.pathname));
+  .then(reasonCode => {
+    console.log('Render reason code:', reasonCode, 'Route:', document.location.pathname);
+  });
 }
 
 class PuppeteerRenderer {
@@ -132,8 +134,8 @@ class PuppeteerRenderer {
         html: await page.content()
       };
 
-      if (!result.html.includes('data-server-rendered="true"')) {
-        throw "Page wasn't rendered properly, was missing data-server-rendered attribute";
+      if (!result.html.includes('data-server-rendered')) {
+        throw new Error("Page wasn't rendered properly, was missing data-server-rendered attribute");
       }
 
       if (!page.isClosed()) {
